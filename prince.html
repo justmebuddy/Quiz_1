@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Multiplayer grammar game where you battle friends and master English fast. Built by Quiz Masters.">
+  <meta name="theme-color" content="#4f46e5" />
+  <link rel="icon" href="/favicon.ico">
+  <title>QuizVerse | Grammar Just Got Game</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 1s ease-out forwards; }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+    }
+    .wiggle-on-hover:hover { animation: wiggle 0.4s ease-in-out; }
+
+    .tagline-animation span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s ease-out forwards;
+    }
+    .tagline-animation span:nth-child(1) { animation-delay: 0.2s; }
+    .tagline-animation span:nth-child(2) { animation-delay: 0.4s; }
+    .tagline-animation span:nth-child(3) { animation-delay: 0.6s; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-violet-200 via-indigo-100 to-amber-50 min-h-screen flex flex-col items-center justify-center px-4 py-12">
+  <main class="max-w-4xl text-center space-y-12 fade-up">
+
+    <!-- Hero -->
+    <section aria-labelledby="hero-title" class="space-y-6">
+      <h1 id="hero-title" class="text-5xl sm:text-6xl font-extrabold text-indigo-800 leading-tight">
+        🚀 Quiz Master
+      </h1>
+      <div class="tagline-animation text-2xl sm:text-3xl text-gray-700 font-medium space-x-1">
+        <span>Learn fast.</span>
+        <span>Play harder.</span>
+        <span>Rule the leaderboard.</span>
+      </div>
+    </section>
+
+    <!-- Core Pitch -->
+    <section>
+      <p class="text-lg sm:text-xl text-gray-800 max-w-2xl mx-auto">
+        No boring grammar drills here. Just real-time multiplayer quiz battles, quirky badges, and lightning-fast language challenges — all powered by AI.
+      </p>
+    </section>
+
+    <!-- Buttons -->
+    <section class="flex flex-wrap justify-center gap-4">
+      <button onclick="window.location.href='/join'" class="wiggle-on-hover bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-7 py-3 rounded-xl shadow-md transition-all">
+        🔗 Join a Room
+      </button>
+      <button onclick="window.location.href='/create'" class="wiggle-on-hover bg-amber-500 hover:bg-amber-600 text-white font-semibold px-7 py-3 rounded-xl shadow-md transition-all">
+        🎮 Host a Game
+      </button>
+      <button onclick="window.location.href='/demo'" class="bg-white hover:bg-gray-100 text-indigo-700 font-medium px-6 py-3 rounded-xl shadow transition-all">
+        👀 Try a Quick Demo
+      </button>
+    </section>
+
+    <!-- Avatar Selection -->
+    <section class="space-y-4">
+      <p class="text-gray-600 text-sm">No account? No problem. Pick an avatar and jump in. Works on any device.</p>
+      <div class="flex justify-center gap-3">
+        <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Ace" alt="Avatar Ace - fun cartoon face" loading="lazy" class="w-12 h-12 rounded-full shadow-md hover:scale-110 transition-transform duration-200 ease-in-out">
+        <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Nova" alt="Avatar Nova - fun cartoon face" loading="lazy" class="w-12 h-12 rounded-full shadow-md hover:scale-110 transition-transform duration-200 ease-in-out">
+        <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Luna" alt="Avatar Luna - fun cartoon face" loading="lazy" class="w-12 h-12 rounded-full shadow-md hover:scale-110 transition-transform duration-200 ease-in-out">
+      </div>
+    </section>
+
+    <!-- Progress Teaser -->
+    <section class="w-full max-w-md mx-auto mt-8">
+      <p class="text-sm text-gray-500 mb-2">Example: You vs 3 players • Round 2 of 5 (40%)</p>
+      <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
+        <div class="bg-indigo-500 h-3 w-2/5 animate-pulse"></div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="mt-10 space-y-3">
+      <h2 class="text-xl font-bold text-indigo-700">💬 What Players Are Saying</h2>
+      <div class="bg-white rounded-lg shadow p-4 text-sm text-gray-700 space-y-2">
+        <p>🎯 <strong>@CommaCrusader</strong>: “I got addicted after one round. It’s like grammar Fortnite.”</p>
+        <p>⚡ <strong>@QuickTyper22</strong>: “Finally something better than flashcards. And fun.”</p>
+        <p>🔥 <strong>@SassyTeacher</strong>: “My students BEG to play this every Friday!”</p>
+      </div>
+    </section>
+
+    <!-- Join by Room Code -->
+    <section class="mt-10 max-w-md w-full text-center bg-white p-6 rounded-xl shadow-md space-y-4 fade-up">
+      <h2 class="text-xl font-semibold text-indigo-800">🔑 Enter Room Code</h2>
+      <p class="text-sm text-gray-600">Got an invite code? Jump right in.</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <input 
+          type="text" 
+          id="roomCodeInput"
+          placeholder="e.g. GRM123" 
+          class="w-full sm:w-auto flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center text-indigo-700 font-semibold"
+        />
+        <button 
+          onclick="joinByCode()" 
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-lg transition-all shadow-md">
+          🚪 Join Room
+        </button>
+      </div>
+    </section>
+
+    <!-- About Us -->
+    <section class="mt-14 max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 space-y-4 text-left">
+      <h2 class="text-2xl font-bold text-indigo-800 text-center">🧠 About Us</h2>
+      <p class="text-gray-700 text-md">
+        <strong>Quizmaster</strong> is proudly built by <span class="font-semibold text-indigo-700">Prince</span> and <span class="font-semibold text-amber-600">Piyush</span> — together known as <strong>Quiz Masters</strong>.
+      </p>
+      <p class="text-gray-700">
+        We created QuizVerse as an interactive, multiplayer quiz platform to help people learn fluent English in a fun and competitive way. Our mission is to make grammar learning engaging, effective, and accessible to everyone — no matter their level.
+      </p>
+      <p class="text-gray-700 italic">
+        This site is 100% human-made with ❤️ and crafted for learners who want more than just rules and drills.
+      </p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-xs text-gray-500 mt-12">
+      © 2025 QuizVerse — Built with ❤️ by Prince & Piyush.
+    </footer>
+
+  </main>
+
+  <!-- Room Code Script -->
+  <script>
+    function joinByCode() {
+      const code = document.getElementById("roomCodeInput").value.trim();
+      if (code) {
+        window.location.href = `/room/${code}`;
+      } else {
+        alert("Please enter a valid room code.");
+      }
+    }
+  </script>
+</body>
+</html>
