@@ -1,150 +1,229 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Multiplayer grammar game where you battle friends and master English fast. Built by Quiz Masters.">
-  <meta name="theme-color" content="#4f46e5" />
-  <link rel="icon" href="/favicon.ico">
-  <title>QuizVerse | Grammar Just Got Game</title>
+  <meta name="description" content="Battle your friends and master grammar in the most addictive quiz game ever!">
+  <title>QuizVerse | Battle. Learn. Win.</title>
+  
+  <!-- TailwindCSS & Confetti -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
   <style>
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+    body {
+      font-family: 'Inter', sans-serif;
     }
-    .fade-up { animation: fadeUp 1s ease-out forwards; }
-
-    @keyframes wiggle {
-      0%, 100% { transform: rotate(-2deg); }
-      50% { transform: rotate(2deg); }
+    h1, h2, .hero-tagline span {
+      font-family: 'Bungee', cursive;
     }
-    .wiggle-on-hover:hover { animation: wiggle 0.4s ease-in-out; }
-
-    .tagline-animation span {
+    /* Gradient Title Animation */
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-gradient {
+      background-size: 200% 200%;
+      animation: gradientMove 4s ease infinite;
+    }
+    /* Tagline Animation */
+    @keyframes bounceFade {
+      0% { transform: scale(1); opacity: 0; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .hero-tagline span {
+      animation: bounceFade 1s ease-in-out forwards;
       display: inline-block;
       opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.6s ease-out forwards;
     }
-    .tagline-animation span:nth-child(1) { animation-delay: 0.2s; }
-    .tagline-animation span:nth-child(2) { animation-delay: 0.4s; }
-    .tagline-animation span:nth-child(3) { animation-delay: 0.6s; }
+    .hero-tagline span:nth-child(1) { animation-delay: 0.2s; }
+    .hero-tagline span:nth-child(2) { animation-delay: 0.4s; }
+    .hero-tagline span:nth-child(3) { animation-delay: 0.6s; }
+    /* Floating Avatars */
+    @keyframes floatAvatar {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    .avatar-bounce {
+      animation: floatAvatar 3s ease-in-out infinite;
+    }
+    /* Glow Buttons */
+    .glow-btn {
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+      transition: box-shadow 0.3s ease;
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 25px rgba(255, 215, 0, 1);
+    }
   </style>
 </head>
-<body class="bg-gradient-to-br from-violet-200 via-indigo-100 to-amber-50 min-h-screen flex flex-col items-center justify-center px-4 py-12">
-  <main class="max-w-4xl text-center space-y-12 fade-up">
+<body class="bg-gradient-to-tr from-indigo-900 via-purple-700 to-indigo-900 text-white min-h-screen flex flex-col items-center justify-center px-6 py-12">
+<main class="max-w-5xl w-full space-y-20 text-center">
 
-    <!-- Hero -->
-    <section aria-labelledby="hero-title" class="space-y-6">
-      <h1 id="hero-title" class="text-5xl sm:text-6xl font-extrabold text-indigo-800 leading-tight">
-        🚀 Quiz Master
-      </h1>
-      <div class="tagline-animation text-2xl sm:text-3xl text-gray-700 font-medium space-x-1">
-        <span>Learn fast.</span>
-        <span>Play harder.</span>
-        <span>Rule the leaderboard.</span>
-      </div>
-    </section>
+  <!-- Hero -->
+  <section class="space-y-4">
+    <h1 class="text-6xl sm:text-7xl font-extrabold drop-shadow text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-pink-500 to-purple-500 animate-gradient">
+      🚀 QuizVerse
+    </h1>
+    <p class="text-lg text-gray-300 italic">Battle your friends. Master grammar. Rule the leaderboard.</p>
+    <div class="hero-tagline text-2xl sm:text-3xl text-white space-x-2">
+      <span>Battle.</span>
+      <span>Learn.</span>
+      <span>Win.</span>
+    </div>
+    <p class="text-teal-300 font-semibold animate-pulse">🎮 324 players are in-game now. Join the fun!</p>
+  </section>
 
-    <!-- Core Pitch -->
-    <section>
-      <p class="text-lg sm:text-xl text-gray-800 max-w-2xl mx-auto">
-        No boring grammar drills here. Just real-time multiplayer quiz battles, quirky badges, and lightning-fast language challenges — all powered by AI.
-      </p>
-    </section>
-
-    <!-- Buttons -->
-    <section class="flex flex-wrap justify-center gap-4">
-      <button onclick="window.location.href='/join'" class="wiggle-on-hover bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-7 py-3 rounded-xl shadow-md transition-all">
-        🔗 Join a Room
+  <!-- Join Input -->
+  <section>
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+      <input id="game-code" type="text" placeholder="Enter Game Code" class="px-6 py-3 w-72 rounded-full text-center text-lg bg-white text-gray-800 placeholder-gray-400 shadow-md focus:outline-none focus:ring-2 focus:ring-amber-400">
+      <button id="join-btn" onclick="joinGame()" class="bg-amber-500 hover:bg-amber-600 glow-btn text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transition-all duration-300">
+        🚪 Join Now
       </button>
-      <button onclick="window.location.href='/create'" class="wiggle-on-hover bg-amber-500 hover:bg-amber-600 text-white font-semibold px-7 py-3 rounded-xl shadow-md transition-all">
-        🎮 Host a Game
-      </button>
-      <button onclick="window.location.href='/demo'" class="bg-white hover:bg-gray-100 text-indigo-700 font-medium px-6 py-3 rounded-xl shadow transition-all">
-        👀 Try a Quick Demo
-      </button>
-    </section>
+    </div>
+  </section>
 
-    <!-- Avatar Selection -->
-    <section class="space-y-4">
-      <p class="text-gray-600 text-sm">No account? No problem. Pick an avatar and jump in. Works on any device.</p>
-      <div class="flex justify-center gap-3">
-        <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Ace" alt="Avatar Ace - fun cartoon face" loading="lazy" class="w-12 h-12 rounded-full shadow-md hover:scale-110 transition-transform duration-200 ease-in-out">
-        <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Nova" alt="Avatar Nova - fun cartoon face" loading="lazy" class="w-12 h-12 rounded-full shadow-md hover:scale-110 transition-transform duration-200 ease-in-out">
-        <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Luna" alt="Avatar Luna - fun cartoon face" loading="lazy" class="w-12 h-12 rounded-full shadow-md hover:scale-110 transition-transform duration-200 ease-in-out">
+  <!-- Action Buttons -->
+  <section class="flex flex-wrap justify-center gap-6">
+    <button onclick="playClick(); window.location.href='/join'" class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-8 py-4 text-xl rounded-full shadow-lg hover:scale-105 transition-all">
+      🔗 Play with Friends
+    </button>
+    <button onclick="playClick(); window.location.href='/create'" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-8 py-4 text-xl rounded-full shadow-lg hover:scale-105 transition-all">
+      👑 Create Game
+    </button>
+    <button onclick="launchDemo();" class="bg-white hover:bg-gray-100 text-indigo-700 font-semibold px-7 py-4 text-lg rounded-full shadow hover:scale-105 transition-all">
+      👀 Try Demo
+    </button>
+  </section>
+
+  <!-- Avatars -->
+  <section>
+    <p class="text-gray-200 mb-3">Choose your fighter 👾 No login needed.</p>
+    <div class="flex justify-center gap-4">
+      <img loading="lazy" src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Ace" alt="Avatar Ace" class="w-14 h-14 rounded-full shadow-lg hover:scale-110 transition avatar-bounce">
+      <img loading="lazy" src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Nova" alt="Avatar Nova" class="w-14 h-14 rounded-full shadow-lg hover:scale-110 transition avatar-bounce">
+      <img loading="lazy" src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Luna" alt="Avatar Luna" class="w-14 h-14 rounded-full shadow-lg hover:scale-110 transition avatar-bounce">
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section>
+    <h2 class="text-3xl font-bold text-amber-400 mb-6">⚡ How It Works</h2>
+    <div class="grid sm:grid-cols-3 gap-6 text-left">
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <h3 class="font-bold text-lg">1️⃣ Join or Create</h3>
+        <p>Enter a game code or create your own room with friends.</p>
       </div>
-    </section>
-
-    <!-- Progress Teaser -->
-    <section class="w-full max-w-md mx-auto mt-8">
-      <p class="text-sm text-gray-500 mb-2">Example: You vs 3 players • Round 2 of 5 (40%)</p>
-      <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
-        <div class="bg-indigo-500 h-3 w-2/5 animate-pulse"></div>
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <h3 class="font-bold text-lg">2️⃣ Choose Avatar</h3>
+        <p>Select a fun fighter avatar to represent you in battles.</p>
       </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="mt-10 space-y-3">
-      <h2 class="text-xl font-bold text-indigo-700">💬 What Players Are Saying</h2>
-      <div class="bg-white rounded-lg shadow p-4 text-sm text-gray-700 space-y-2">
-        <p>🎯 <strong>@CommaCrusader</strong>: “I got addicted after one round. It’s like grammar Fortnite.”</p>
-        <p>⚡ <strong>@QuickTyper22</strong>: “Finally something better than flashcards. And fun.”</p>
-        <p>🔥 <strong>@SassyTeacher</strong>: “My students BEG to play this every Friday!”</p>
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <h3 class="font-bold text-lg">3️⃣ Play & Win</h3>
+        <p>Answer questions fast, climb ranks, and earn badges.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Join by Room Code -->
-    <section class="mt-10 max-w-md w-full text-center bg-white p-6 rounded-xl shadow-md space-y-4 fade-up">
-      <h2 class="text-xl font-semibold text-indigo-800">🔑 Enter Room Code</h2>
-      <p class="text-sm text-gray-600">Got an invite code? Jump right in.</p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <input 
-          type="text" 
-          id="roomCodeInput"
-          placeholder="e.g. GRM123" 
-          class="w-full sm:w-auto flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center text-indigo-700 font-semibold"
-        />
-        <button 
-          onclick="joinByCode()" 
-          class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-lg transition-all shadow-md">
-          🚪 Join Room
-        </button>
+  <!-- Features -->
+  <section>
+    <h2 class="text-3xl font-bold text-amber-400 mb-6">🔥 Why You'll Love QuizVerse</h2>
+    <div class="grid sm:grid-cols-3 gap-6 text-left">
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <p>🎯 Real-time multiplayer battles</p>
       </div>
-    </section>
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <p>🏆 Achievement badges & rewards</p>
+      </div>
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <p>📚 Learn while having fun</p>
+      </div>
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <p>⚡ Instant feedback on answers</p>
+      </div>
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <p>🎨 Fun avatars & themes</p>
+      </div>
+      <div class="bg-white text-gray-800 p-5 rounded-xl shadow-lg">
+        <p>🌍 Play from anywhere</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- About Us -->
-    <section class="mt-14 max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 space-y-4 text-left">
-      <h2 class="text-2xl font-bold text-indigo-800 text-center">🧠 About Us</h2>
-      <p class="text-gray-700 text-md">
-        <strong>Quizmaster</strong> is proudly built by <span class="font-semibold text-indigo-700">Prince</span> and <span class="font-semibold text-amber-600">Piyush</span> — together known as <strong>Quiz Masters</strong>.
-      </p>
-      <p class="text-gray-700">
-        We created QuizVerse as an interactive, multiplayer quiz platform to help people learn fluent English in a fun and competitive way. Our mission is to make grammar learning engaging, effective, and accessible to everyone — no matter their level.
-      </p>
-      <p class="text-gray-700 italic">
-        This site is 100% human-made with ❤️ and crafted for learners who want more than just rules and drills.
-      </p>
-    </section>
+  <!-- FAQ -->
+  <section>
+    <h2 class="text-3xl font-bold text-amber-400 mb-6">❓ FAQ</h2>
+    <div class="space-y-4 text-left max-w-3xl mx-auto">
+      <div class="bg-white text-gray-800 p-4 rounded-lg">
+        <p><strong>Do I need to create an account?</strong><br>No, you can play instantly without signing up.</p>
+      </div>
+      <div class="bg-white text-gray-800 p-4 rounded-lg">
+        <p><strong>Is it free?</strong><br>Yes! QuizVerse is 100% free to play.</p>
+      </div>
+      <div class="bg-white text-gray-800 p-4 rounded-lg">
+        <p><strong>Can I play on mobile?</strong><br>Absolutely — it's fully responsive.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="text-xs text-gray-500 mt-12">
-      © 2025 QuizVerse — Built with ❤️ by Prince & Piyush.
-    </footer>
+  <!-- About -->
+  <section class="bg-white text-gray-800 rounded-2xl p-6 shadow-lg max-w-3xl mx-auto space-y-3">
+    <h2 class="text-2xl font-bold text-indigo-800 text-center">👑 Meet the Creators</h2>
+    <div class="space-y-4">
+      <div>
+        <p class="font-semibold text-indigo-700">Prince Meena — Backend Engineer</p>
+        <p>Expert in Node.js, Supabase, and server scaling. Loves coffee and competitive coding.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-pink-600">Piyush Kumar — Frontend Designer</p>
+        <p>Master of UI/UX, TailwindCSS, and animations. Makes code look like art.</p>
+      </div>
+    </div>
+    <div class="mt-4 text-center">
+      <p class="font-semibold">📧 Contact us:</p>
+      <p>Email: <a href="mailto:quizverse.team@gmail.com" class="text-blue-600 underline">quizverse.team@gmail.com</a></p>
+      <p>Twitter: <a href="#" class="text-blue-500 underline">@QuizVerseGame</a></p>
+    </div>
+  </section>
 
-  </main>
+  <!-- Footer -->
+  <footer class="mt-16 text-sm text-white opacity-70">
+    © 2025 QuizVerse — Made with ❤️ by Prince & Piyush
+  </footer>
 
-  <!-- Room Code Script -->
-  <script>
-    function joinByCode() {
-      const code = document.getElementById("roomCodeInput").value.trim();
-      if (code) {
-        window.location.href = `/room/${code}`;
-      } else {
-        alert("Please enter a valid room code.");
-      }
-    }
-  </script>
+</main>
+
+<audio id="click-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_207876fb60.mp3?filename=button-124476.mp3" preload="auto"></audio>
+
+<script>
+  function playClick() {
+    const sound = document.getElementById("click-sound");
+    if (sound) sound.play();
+  }
+  function launchDemo() {
+    playClick();
+confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+    setTimeout(() => window.location.href = '/demo', 700);
+  }
+  function joinGame() {
+    playClick();
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    alert("Joining game...");
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("game-code");
+    input.focus();
+    input.addEventListener("keypress", e => {
+      if (e.key === "Enter") document.getElementById("join-btn").click();
+    });
+  });
+</script>
 </body>
 </html>
